@@ -8,13 +8,14 @@
     <groupId>com.houari</groupId>
     <artifactId>Calculator</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>war</packaging> <!-- Changed to war -->
+    <packaging>war</packaging> <!-- WAR packaging -->
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <jackson-dataformat-yaml.version>2.14.2</jackson-dataformat-yaml.version>
         <junit-jupiter-params.version>5.9.2</junit-jupiter-params.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
@@ -33,7 +34,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Servlet API required for WAR deployment -->
+        <!-- Servlet API for WAR deployment -->
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
@@ -55,7 +56,7 @@
                 </configuration>
             </plugin>
 
-            <!-- WAR plugin (optional, for customizations) -->
+            <!-- WAR plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -64,6 +65,30 @@
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
+
+            <!-- Deploy plugin with snapshot/release logic -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>3.1.2</version>
+                <configuration>
+                    <!-- Optional: skip deploy if snapshot repository not defined -->
+                    <skipIfMissingRepository>true</skipIfMissingRepository>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <!-- Release repository -->
+        <repository>
+            <id>maven-releases</id>
+            <url>http://3.91.96.245:8081/repository/maven-releases</url>
+        </repository>
+        <!-- Snapshot repository -->
+        <snapshotRepository>
+            <id>maven-snapshots</id>
+            <url>http://3.91.96.245:8081/repository/maven-snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
