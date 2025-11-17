@@ -66,13 +66,12 @@
                 </configuration>
             </plugin>
 
-            <!-- Deploy plugin with snapshot/release logic -->
+            <!-- Deploy plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <version>3.1.2</version>
                 <configuration>
-                    <!-- Optional: skip deploy if snapshot repository not defined -->
                     <skipIfMissingRepository>true</skipIfMissingRepository>
                 </configuration>
             </plugin>
