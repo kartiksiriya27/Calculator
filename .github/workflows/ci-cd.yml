@@ -58,13 +58,16 @@ jobs:
       id: vars
       run: |
         if [[ "${GITHUB_REF##*/}" == "master" ]]; then
-          # Release version
-          VERSION="1.0.${GITHUB_RUN_NUMBER}"
+          # Release version (semantic version)
+          VERSION="1.0.0"
+          REPO="${{ env.NEXUS_REPO_RELEASE }}"
         else
-          # Snapshot version for branches/PRs
-          VERSION="1.0.${GITHUB_RUN_NUMBER}-SNAPSHOT"
+          # Snapshot version with build number
+          VERSION="1.0-${GITHUB_RUN_NUMBER}-SNAPSHOT"
+          REPO="${{ env.NEXUS_REPO_SNAPSHOT }}"
         fi
         echo "BUILD_VERSION=$VERSION" >> $GITHUB_ENV
+        echo "DEPLOY_REPO=$REPO" >> $GITHUB_ENV
 
     # -------------------------
     # Build WAR file
@@ -80,14 +83,8 @@ jobs:
         NEXUS_USER: ${{ secrets.NEXUSUNAME }}
         NEXUS_PASS: ${{ secrets.NEXUSPW }}
       run: |
-        if [[ "${{ env.BUILD_VERSION }}" == *SNAPSHOT ]]; then
-          REPO=${{ env.NEXUS_REPO_SNAPSHOT }}
-        else
-          REPO=${{ env.NEXUS_REPO_RELEASE }}
-        fi
-
         mvn deploy -Dbuild.version=${{ env.BUILD_VERSION }} -DskipTests \
-          -DaltDeploymentRepository=deployment::default::http://${NEXUS_USER}:${NEXUS_PASS}@${{ env.NEXUS_URL }}/repository/${REPO}
+          -DaltDeploymentRepository=deployment::default::http://${NEXUS_USER}:${NEXUS_PASS}@${{ env.NEXUS_URL }}/repository/${{ env.DEPLOY_REPO }}
 
     # -------------------------
     # Build Docker Image
@@ -111,3 +108,4 @@ jobs:
     - name: Push Docker Image
       run: |
         docker push siriya27/java-app:${{ env.BUILD_VERSION }}
+
