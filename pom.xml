@@ -9,13 +9,13 @@
     <groupId>com.houari</groupId>
     <artifactId>Calculator</artifactId>
 
-    <!-- Version controlled from Jenkins or manually -->
-    <version>${revision}</version>
+    <!-- Version is now controlled via build.version property -->
+    <version>${build.version}</version>
 
     <packaging>war</packaging>
 
     <properties>
-        <revision>1.0-SNAPSHOT</revision>
+        <build.version>1.0-SNAPSHOT</build.version>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <jackson-dataformat-yaml.version>2.14.2</jackson-dataformat-yaml.version>
@@ -29,14 +29,12 @@
             <artifactId>jackson-dataformat-yaml</artifactId>
             <version>${jackson-dataformat-yaml.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
             <version>${junit-jupiter-params.version}</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
@@ -77,17 +75,17 @@
         </plugins>
     </build>
 
-    <!-- Distribution Management for snapshots and releases -->
+    <!-- Nexus distribution management -->
     <distributionManagement>
         <repository>
             <id>maven-releases</id>
             <name>Release Repository</name>
-            <url>http://***3.83.97.95:8081/repository/maven-releases/</url>
+            <url>http://3.83.97.95:8081/repository/maven-releases/</url>
         </repository>
         <snapshotRepository>
             <id>maven-snapshots</id>
             <name>Snapshot Repository</name>
-            <url>http://***3.83.97.95:8081/repository/maven-snapshots/</url>
+            <url>http://3.83.97.95:8081/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
